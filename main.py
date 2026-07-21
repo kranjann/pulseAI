@@ -1,15 +1,17 @@
 from pathlib import Path
 
 from app.loaders.log_loader import LogLoader
-
+from app.parser.log_parser import LogParser
 
 def main():
     loader = LogLoader()
+    parser = LogParser()
 
-    log_text = loader.load(Path("sample_data/pipeline.log"))
+    raw_log = loader.load(Path("sample_data/pipeline.log"))
 
-    print(log_text[:500])
+    report = parser.parse(raw_log)
 
+    print(report.model_dump())
 
 if __name__ == "__main__":
     main()
