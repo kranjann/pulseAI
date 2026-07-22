@@ -40,10 +40,10 @@ class LogParser:
                 continue
 
             if "AssertionError" in line:
-                _, extracted_message = line.split("AssertionError:", maxsplit=1)
+                parts = line.split("AssertionError:", maxsplit=1)
 
-                
-                current_failure.assertion_message = extracted_message.strip()
+                if len(parts) >=2 :
+                    current_failure.assertion_message = parts[1].strip()
 
 
     def _extract_locations(self, lines, failed_tests):
@@ -59,7 +59,7 @@ class LogParser:
             if current_failure is None:
                 continue
 
-            if "AssertionError" in line and ".py" in line:
+            if ".py" in line and "::" not in line:
                 line_number = line.rsplit(":", maxsplit=2)[1]
 
                 current_failure.line_number = int(line_number)
