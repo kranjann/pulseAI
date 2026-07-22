@@ -1,17 +1,27 @@
 from pathlib import Path
 
-from app.loaders.log_loader import LogLoader
-from app.parser.log_parser import LogParser
+from app.loaders.incident_loader import IncidentLoader
+
 
 def main():
-    loader = LogLoader()
-    parser = LogParser()
+    loader = IncidentLoader()
 
-    raw_log = loader.load(Path("sample_data/pipeline.log"))
+    incidents = loader.load(
+        Path("app/knowledge_base/incidents.json")
+    )
 
-    report = parser.parse(raw_log)
+    print(f"Loaded {len(incidents)} incidents\n")
 
-    print(report.model_dump())
+    for incident in incidents:
+        print("=" * 60)
+        print(f"ID         : {incident.id}")
+        print(f"Title      : {incident.title}")
+        print(f"Component  : {incident.component}")
+        print(f"Severity   : {incident.severity}")
+        print(f"Tags       : {', '.join(incident.tags)}")
+        print(f"Root Cause : {incident.root_cause}")
+        print(f"Resolution : {incident.resolution}")
+
 
 if __name__ == "__main__":
     main()
