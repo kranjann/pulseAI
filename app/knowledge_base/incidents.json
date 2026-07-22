@@ -1,0 +1,122 @@
+[
+  {
+    "id": "INC-001",
+    "title": "Authentication failed due to expired JWT",
+    "component": "Authentication",
+    "test_name": "test_valid_login",
+    "assertion": "assert response.status_code == 200",
+    "failure_summary": "Login endpoint returned HTTP 401 Unauthorized.",
+    "root_cause": "JWT access token expired before API request execution.",
+    "resolution": "Refresh the access token before executing authenticated API requests.",
+    "severity": "HIGH",
+    "tags": ["authentication", "jwt", "login", "api"]
+  },
+  {
+    "id": "INC-002",
+    "title": "Database connection timeout",
+    "component": "Database",
+    "test_name": "test_create_order",
+    "assertion": "assert order_created is True",
+    "failure_summary": "Application timed out while connecting to PostgreSQL.",
+    "root_cause": "Database service was unavailable during deployment.",
+    "resolution": "Wait for database readiness before running integration tests.",
+    "severity": "CRITICAL",
+    "tags": ["database", "postgres", "timeout", "integration"]
+  },
+  {
+    "id": "INC-003",
+    "title": "Playwright locator no longer matches",
+    "component": "Frontend",
+    "test_name": "test_checkout_button",
+    "assertion": "locator.click()",
+    "failure_summary": "Playwright could not locate the Checkout button.",
+    "root_cause": "Frontend changed button text from 'Checkout' to 'Proceed to Payment'.",
+    "resolution": "Replace text locator with a stable data-testid locator.",
+    "severity": "MEDIUM",
+    "tags": ["playwright", "ui", "locator", "frontend"]
+  },
+  {
+    "id": "INC-004",
+    "title": "Redis cache unavailable",
+    "component": "Cache",
+    "test_name": "test_product_cache",
+    "assertion": "assert cache_hit is True",
+    "failure_summary": "Redis server refused incoming connections.",
+    "root_cause": "Redis container failed during startup.",
+    "resolution": "Restart Redis container and configure health checks.",
+    "severity": "HIGH",
+    "tags": ["redis", "cache", "docker"]
+  },
+  {
+    "id": "INC-005",
+    "title": "API rate limit exceeded",
+    "component": "API Gateway",
+    "test_name": "test_bulk_requests",
+    "assertion": "assert response.status_code == 200",
+    "failure_summary": "API returned HTTP 429 Too Many Requests.",
+    "root_cause": "Load test exceeded configured rate limit.",
+    "resolution": "Throttle request rate or increase API rate limit.",
+    "severity": "MEDIUM",
+    "tags": ["api", "rate-limit", "performance"]
+  },
+  {
+    "id": "INC-006",
+    "title": "Schema migration mismatch",
+    "component": "Database",
+    "test_name": "test_user_profile",
+    "assertion": "assert profile_exists",
+    "failure_summary": "Column 'phone_number' does not exist.",
+    "root_cause": "Latest migration was not applied before running tests.",
+    "resolution": "Execute migration scripts as part of deployment pipeline.",
+    "severity": "HIGH",
+    "tags": ["migration", "database", "schema"]
+  },
+  {
+    "id": "INC-007",
+    "title": "S3 upload permission denied",
+    "component": "Storage",
+    "test_name": "test_upload_document",
+    "assertion": "assert upload_success",
+    "failure_summary": "AWS returned AccessDenied while uploading object.",
+    "root_cause": "IAM role lacked PutObject permission.",
+    "resolution": "Grant s3:PutObject permission to deployment role.",
+    "severity": "HIGH",
+    "tags": ["aws", "s3", "iam", "permissions"]
+  },
+  {
+    "id": "INC-008",
+    "title": "Message queue processing delayed",
+    "component": "Messaging",
+    "test_name": "test_order_events",
+    "assertion": "assert event_received",
+    "failure_summary": "Consumer did not receive message within timeout.",
+    "root_cause": "RabbitMQ queue accumulated a large backlog.",
+    "resolution": "Scale consumer instances and purge stale messages.",
+    "severity": "MEDIUM",
+    "tags": ["rabbitmq", "queue", "messaging"]
+  },
+  {
+    "id": "INC-009",
+    "title": "DNS resolution failure",
+    "component": "Networking",
+    "test_name": "test_external_service",
+    "assertion": "assert response.ok",
+    "failure_summary": "Hostname could not be resolved.",
+    "root_cause": "DNS service was temporarily unavailable.",
+    "resolution": "Retry request with exponential backoff and monitor DNS health.",
+    "severity": "HIGH",
+    "tags": ["dns", "network", "infrastructure"]
+  },
+  {
+    "id": "INC-010",
+    "title": "Disk space exhausted",
+    "component": "Infrastructure",
+    "test_name": "test_log_rotation",
+    "assertion": "assert log_written",
+    "failure_summary": "Application failed to write log files.",
+    "root_cause": "Build agent ran out of disk space.",
+    "resolution": "Clean old artifacts and configure automatic log rotation.",
+    "severity": "CRITICAL",
+    "tags": ["disk", "storage", "ci", "logs"]
+  }
+]
