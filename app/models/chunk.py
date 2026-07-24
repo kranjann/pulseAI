@@ -12,4 +12,9 @@ class Chunk(BaseModel):
     metadata: dict[str, str | list[str]] = Field(
         default_factory=dict,
         description="Additional searchable metadata"
+    
+    )
+    embedding: list[float] | None = Field(
+        default=None,
+        description="Semantic vector representation of the chunk."
     )
