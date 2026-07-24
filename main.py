@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from app.chunking.chunking_service import ChunkingService
+from app.embeddings.embedding_service import EmbeddingService
 from app.loaders.incident_loader import IncidentLoader
 
 
@@ -17,14 +18,23 @@ def main():
 
     print(f"Created {len(chunks)} chunks\n")
 
-    # Print each chunk
-    for chunk in chunks:
+    # Generate embeddings
+    embedding_service = EmbeddingService("all-MiniLM-L6-v2")
+    embedded_chunks = embedding_service.embed_chunks(chunks)
+
+    # Print each embedded chunk
+    for chunk in embedded_chunks:
         print("=" * 80)
         print(f"Chunk ID    : {chunk.chunk_id}")
         print(f"Incident ID : {chunk.incident_id}")
         print("Metadata    :", chunk.metadata)
+
         print("\nText:")
         print(chunk.text)
+
+        print("\nEmbedding")
+        print(f"Dimensions  : {len(chunk.embedding)}")
+        print(f"First 10 values : {chunk.embedding[:10]}")
         print()
 
 
